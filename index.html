@@ -62,7 +62,7 @@
             background: rgba(255,255,255,0.05);
         }
 
-        .dark .nav-item.active, .dark .tree-item.active {
+        .dark .nav-item.active, .dark .tree-item.active, .dark .child-item.active {
             background: rgba(255,255,255,0.08);
         }
 
@@ -871,7 +871,7 @@
             color: var(--text);
         }
 
-        .nav-item.active, .tree-item.active {
+        .nav-item.active, .tree-item.active, .child-item.active {
             background: rgba(0,0,0,0.06);
             color: var(--text);
             font-weight: 500;
@@ -1994,6 +1994,45 @@
             }
         }
 
+        /* Data-only view (no chat) */
+        .data-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - var(--topbar-h) - 12px);
+            max-height: calc(100vh - var(--topbar-h) - 12px);
+            border-radius: 12px;
+            background: var(--surface);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.02);
+            overflow: hidden;
+            animation: splitFadeIn 0.25s ease;
+        }
+
+        .data-view .sv-data-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--line);
+            flex-shrink: 0;
+        }
+
+        .data-view .sv-data-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .data-view .sv-data-subtitle {
+            font-size: 13px;
+            color: var(--text-faint);
+            margin-top: 2px;
+        }
+
+        .data-view .sv-data-body {
+            flex: 1;
+            overflow: auto;
+            padding: 16px 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -2969,6 +3008,79 @@
                 e.preventDefault();
                 handleSend();
             }
+        });
+
+        // ── Data-only view: click dataset in sidebar ──
+        function createDataView(datasetName, agendaName) {
+            const el = document.createElement('div');
+            el.className = 'data-view';
+            el.innerHTML = `
+                <div class="sv-data-header">
+                    <div class="sv-breadcrumb">
+                        <span>${escapeHTML(agendaName)}</span>
+                        <span class="sv-breadcrumb-sep">›</span>
+                        <span class="sv-breadcrumb-current">${escapeHTML(datasetName)}</span>
+                    </div>
+                    <div class="sv-data-title">${escapeHTML(datasetName)}</div>
+                    <div class="sv-data-subtitle">Základní evidence · ${vehicleData.length} záznamů</div>
+                </div>
+                <div class="sv-data-body">
+                    <table class="sv-table">
+                        <thead>
+                            <tr>
+                                <th>SPZ</th>
+                                <th>Značka</th>
+                                <th>Model</th>
+                                <th>Rok</th>
+                                <th>Stav STK</th>
+                                <th>Přiděleno</th>
+                                <th>Lokace</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            `;
+            const tbody = el.querySelector('tbody');
+            tbody.innerHTML = vehicleData.map(v => `
+                <tr>
+                    <td style="font-weight:500">${v.spz}</td>
+                    <td>${v.brand}</td>
+                    <td>${v.model}</td>
+                    <td>${v.year}</td>
+                    <td><span class="sv-status-badge ${v.stk}"><span class="sv-status-dot"></span>${v.stkLabel}</span></td>
+                    <td>${v.person}</td>
+                    <td>${v.loc}</td>
+                </tr>
+            `).join('');
+            return el;
+        }
+
+        function showDataView(datasetName, agendaName) {
+            // Hide hero
+            heroEl.classList.add('hidden');
+            // Remove any existing split-view or data-view
+            const existing = workspace.querySelector('.split-view, .data-view');
+            if (existing) existing.remove();
+            // Create and append data-only view
+            const dataView = createDataView(datasetName, agendaName);
+            workspace.appendChild(dataView);
+        }
+
+        // Wire child-item clicks via event delegation (works for sidebar + float)
+        document.addEventListener('click', (e) => {
+            const item = e.target.closest('.child-item');
+            if (!item) return;
+            e.stopPropagation();
+            const datasetName = item.querySelector('.grow span').textContent.trim();
+            const treeGroup = item.closest('.tree-group');
+            const agendaName = treeGroup ? treeGroup.querySelector('.tree-item .grow span').textContent.trim() : '';
+
+            // Mark active across both sidebar and float
+            document.querySelectorAll('.child-item').forEach(c => c.classList.remove('active'));
+            item.classList.add('active');
+
+            showDataView(datasetName, agendaName);
         });
     })();
 </script>
