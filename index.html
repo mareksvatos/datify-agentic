@@ -1589,8 +1589,8 @@
 
         /* Left: Chat Panel */
         .sv-chat {
-            flex: 0 0 50%;
-            max-width: 50%;
+            flex: 0 0 22%;
+            max-width: 22%;
             display: flex;
             flex-direction: column;
             border-radius: 12px;
@@ -2792,6 +2792,9 @@
                             <div class="sv-chat-header-icon" title="Více">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
                             </div>
+                            <div class="sv-chat-header-icon sv-chat-close" title="Zavřít chat">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                            </div>
                         </div>
                     </div>
                     <div class="sv-chat-messages" id="svChatMessages">
@@ -3000,6 +3003,12 @@
             });
 
             svInput.focus();
+
+            // Wire close button
+            const closeBtn = splitView.querySelector('.sv-chat-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => convertSplitToDataView());
+            }
         }
 
         heroSendBtn.addEventListener('click', handleSend);
@@ -3066,6 +3075,152 @@
             const dataView = createDataView(datasetName, agendaName);
             workspace.appendChild(dataView);
         }
+
+        // ── Add chat panel next to data-view ──
+        function createChatPanel(prefillMessage) {
+            const chatEl = document.createElement('div');
+            chatEl.className = 'sv-chat';
+            chatEl.innerHTML = `
+                <div class="sv-chat-header">
+                    <div class="sv-chat-header-left">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span class="sv-chat-header-title">Chat</span>
+                    </div>
+                    <div class="sv-chat-header-icons">
+                        <div class="sv-chat-header-icon" title="Nastavení">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                        </div>
+                        <div class="sv-chat-header-icon" title="Více">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                        </div>
+                        <div class="sv-chat-header-icon sv-chat-close" title="Zavřít chat">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="sv-chat-messages" id="svChatMessages">
+                    <div class="sv-date-separator">${getDateStr()}</div>
+                </div>
+                <div class="sv-chat-input">
+                    <div class="sv-chat-input-box">
+                        <div class="sv-chat-input-icons">
+                            <div class="sv-chat-input-icon" title="Příloha">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="Napište zprávu..." id="svChatInput" />
+                        <button class="sv-send-btn" id="svSendBtn" title="Odeslat">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+            return chatEl;
+        }
+
+        function convertDataViewToSplit(chatName) {
+            const dataView = workspace.querySelector('.data-view');
+            if (!dataView) return;
+
+            // Extract the data content from data-view
+            const dataHeader = dataView.querySelector('.sv-data-header');
+            const dataBody = dataView.querySelector('.sv-data-body');
+
+            // Create split-view wrapper
+            const splitView = document.createElement('div');
+            splitView.className = 'split-view';
+
+            // Create chat panel
+            const chatPanel = createChatPanel();
+
+            // Create resize handle
+            const resizeHandle = document.createElement('div');
+            resizeHandle.className = 'sv-resize-handle';
+            resizeHandle.id = 'svResizeHandle';
+
+            // Create data panel reusing existing content
+            const dataPanel = document.createElement('div');
+            dataPanel.className = 'sv-data';
+            dataPanel.appendChild(dataHeader);
+            dataPanel.appendChild(dataBody);
+
+            // Narrower chat when opened alongside data
+            chatPanel.style.flex = 'none';
+            chatPanel.style.width = '22%';
+            chatPanel.style.maxWidth = '22%';
+
+            // Assemble split view
+            splitView.appendChild(chatPanel);
+            splitView.appendChild(resizeHandle);
+            splitView.appendChild(dataPanel);
+
+            // Replace data-view with split-view
+            dataView.remove();
+            workspace.appendChild(splitView);
+
+            // Init resize
+            initResize(splitView);
+
+            // Wire follow-up input
+            const svInput = document.getElementById('svChatInput');
+            const svSendBtn = document.getElementById('svSendBtn');
+
+            function handleFollowUp() {
+                const msg = svInput.value.trim();
+                if (!msg) return;
+                addFollowUpMessage(msg);
+                svInput.value = '';
+            }
+
+            svSendBtn.addEventListener('click', handleFollowUp);
+            svInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleFollowUp();
+                }
+            });
+
+            svInput.focus();
+
+            // Wire close button
+            const closeBtn = splitView.querySelector('.sv-chat-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => convertSplitToDataView());
+            }
+        }
+
+        function convertSplitToDataView() {
+            const splitView = workspace.querySelector('.split-view');
+            if (!splitView) return;
+
+            const dataPanel = splitView.querySelector('.sv-data');
+            if (!dataPanel) return;
+
+            // Create data-only view and move content into it
+            const dataView = document.createElement('div');
+            dataView.className = 'data-view';
+            while (dataPanel.firstChild) {
+                dataView.appendChild(dataPanel.firstChild);
+            }
+
+            splitView.remove();
+            workspace.appendChild(dataView);
+        }
+
+        // Sidebar Chat mode button & chat items: open chat next to data table
+        document.addEventListener('click', (e) => {
+            const chatModeBtn = e.target.closest('.sidebar-mode[data-mode="chat"]');
+            const chatNewBtn = e.target.closest('.chat-new-btn');
+            const chatItem = e.target.closest('.chat-item');
+
+            if (chatModeBtn || chatNewBtn || chatItem) {
+                const dataView = workspace.querySelector('.data-view');
+                if (dataView) {
+                    const name = chatItem ? chatItem.querySelector('.chat-name').textContent.trim() : null;
+                    convertDataViewToSplit(name);
+                }
+            }
+        });
 
         // Wire child-item clicks via event delegation (works for sidebar + float)
         document.addEventListener('click', (e) => {
