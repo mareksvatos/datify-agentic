@@ -423,6 +423,7 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .top-search {
@@ -3017,6 +3018,22 @@
                 e.preventDefault();
                 handleSend();
             }
+        });
+
+        // ── Logo click: return to homepage ──
+        document.querySelector('.logo-line').addEventListener('click', () => {
+            const existing = workspace.querySelector('.split-view, .data-view');
+            if (existing) existing.remove();
+            heroEl.classList.remove('hidden');
+            // Reset sidebar to Home mode
+            document.querySelectorAll('.sidebar-mode').forEach(b => b.classList.remove('active'));
+            const homeBtn = document.querySelector('.sidebar-mode[data-mode="home"]');
+            if (homeBtn) homeBtn.classList.add('active');
+            document.querySelectorAll('.sidebar-panel').forEach(p => {
+                p.classList.toggle('active', p.dataset.mode === 'home');
+            });
+            // Clear child-item active state
+            document.querySelectorAll('.child-item').forEach(c => c.classList.remove('active'));
         });
 
         // ── Data-only view: click dataset in sidebar ──
