@@ -1859,29 +1859,50 @@
         }
 
         .sv-data-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--line);
+            padding: 10px 16px 6px;
+            border-bottom: none;
             flex-shrink: 0;
         }
 
         .sv-breadcrumb {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 5px;
+            font-size: 13px;
             color: var(--text-faint);
-            margin-bottom: 8px;
+            min-width: 0;
+        }
+
+        .sv-breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 2px 4px;
+            transition: background 0.1s;
+        }
+
+        .sv-breadcrumb-item:hover {
+            background: rgba(0,0,0,0.04);
+        }
+
+        .dark .sv-breadcrumb-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sv-breadcrumb-sep {
+            color: var(--text-faint);
+            font-size: 13px;
         }
 
         .sv-breadcrumb-current {
-            color: var(--text-soft);
-            font-weight: 500;
-        }
-
-        .sv-data-title {
-            font-size: 18px;
-            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             color: var(--text);
+            font-weight: 600;
+            font-size: 18px;
             letter-spacing: -0.02em;
         }
 
@@ -1894,7 +1915,7 @@
         .sv-data-body {
             flex: 1;
             overflow: auto;
-            padding: 16px;
+            padding: 0 16px 16px;
         }
 
         .sv-data-body::-webkit-scrollbar { width: 4px; }
@@ -1903,57 +1924,99 @@
             border-radius: 999px;
         }
 
-        /* Data Table */
+        /* Data Table — Notion-inspired */
         .sv-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            font-size: 13px;
+            font-size: 13.5px;
         }
 
         .sv-table thead th {
             text-align: left;
-            padding: 8px 12px;
-            font-size: 11.5px;
-            font-weight: 600;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 400;
             color: var(--text-faint);
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            border-bottom: 1px solid var(--line-strong);
+            border-bottom: none;
+            border-right: none;
             background: var(--surface);
             position: sticky;
             top: 0;
             white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .sv-th-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sv-th-inner svg {
+            flex-shrink: 0;
+            opacity: 0.4;
+            width: 11px;
+            height: 11px;
+        }
+
+        .sv-col-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            display: inline-grid;
+            place-items: center;
+            color: var(--text-faint);
+            cursor: pointer;
+            transition: 0.1s;
+            border: none;
+            background: none;
+            padding: 0;
+            opacity: 0.5;
+        }
+
+        .sv-col-btn:hover {
+            background: rgba(0,0,0,0.05);
+            color: var(--text-soft);
+            opacity: 1;
+        }
+
+        .dark .sv-col-btn:hover {
+            background: rgba(255,255,255,0.06);
         }
 
         .sv-table tbody td {
-            padding: 9px 12px;
-            border-bottom: 1px solid var(--line);
+            padding: 7px 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
             color: var(--text);
             white-space: nowrap;
         }
 
-        .sv-table tbody tr:hover { background: rgba(59, 130, 246, 0.03); }
-        .dark .sv-table tbody tr:hover { background: rgba(91, 156, 246, 0.06); }
+        .dark .sv-table tbody td {
+            border-bottom-color: rgba(255,255,255,0.04);
+        }
+
+        .sv-table tbody tr:hover { background: rgba(0,0,0,0.02); }
+        .dark .sv-table tbody tr:hover { background: rgba(255,255,255,0.03); }
         .sv-table tbody tr:last-child td { border-bottom: none; }
 
         .sv-status-badge {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 500;
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 999px;
         }
 
-        .sv-status-badge.active { background: #dcfce7; color: #16a34a; }
-        .sv-status-badge.expiring { background: #fef3c7; color: #d97706; }
-        .sv-status-badge.inactive { background: #fee2e2; color: #dc2626; }
+        .sv-status-badge.active { background: rgba(22,163,74,0.08); color: #16a34a; }
+        .sv-status-badge.expiring { background: rgba(217,119,6,0.08); color: #d97706; }
+        .sv-status-badge.inactive { background: rgba(220,38,38,0.08); color: #dc2626; }
 
-        .dark .sv-status-badge.active { background: #14532d; color: #4ade80; }
-        .dark .sv-status-badge.expiring { background: #422006; color: #fbbf24; }
-        .dark .sv-status-badge.inactive { background: #450a0a; color: #f87171; }
+        .dark .sv-status-badge.active { background: rgba(74,222,128,0.12); color: #4ade80; }
+        .dark .sv-status-badge.expiring { background: rgba(251,191,36,0.12); color: #fbbf24; }
+        .dark .sv-status-badge.inactive { background: rgba(248,113,113,0.12); color: #f87171; }
 
         .sv-status-dot {
             width: 6px;
@@ -2010,28 +2073,171 @@
         }
 
         .data-view .sv-data-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--line);
-            flex-shrink: 0;
-        }
-
-        .data-view .sv-data-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.02em;
-        }
-
-        .data-view .sv-data-subtitle {
-            font-size: 13px;
-            color: var(--text-faint);
-            margin-top: 2px;
+            padding: 10px 20px 6px;
         }
 
         .data-view .sv-data-body {
             flex: 1;
             overflow: auto;
-            padding: 16px 20px;
+            padding: 0 20px 16px;
+        }
+
+        /* ── Data Toolbar & View Listing ── */
+        .sv-data-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: none;
+            flex-shrink: 0;
+            min-height: 32px;
+            gap: 8px;
+        }
+
+        .data-view .sv-data-toolbar {
+            padding: 0 20px;
+        }
+
+        .sv-view-tabs {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            overflow-x: auto;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        .sv-view-tabs::-webkit-scrollbar { height: 0; }
+
+        .sv-view-tab {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-faint);
+            cursor: pointer;
+            border-radius: 6px;
+            white-space: nowrap;
+            transition: color 0.12s, background 0.12s;
+            position: relative;
+        }
+
+        .sv-view-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 8px;
+            right: 8px;
+            height: 2px;
+            border-radius: 2px;
+            background: transparent;
+            transition: background 0.12s;
+        }
+
+        .sv-view-tab:hover {
+            color: var(--text-soft);
+            background: rgba(0,0,0,0.03);
+        }
+
+        .dark .sv-view-tab:hover {
+            background: rgba(255,255,255,0.04);
+        }
+
+        .sv-view-tab.active {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .sv-view-tab.active::after {
+            background: var(--primary);
+        }
+
+        .sv-view-tab svg {
+            flex-shrink: 0;
+            color: inherit;
+        }
+
+        .sv-view-add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            color: var(--text-faint);
+            cursor: pointer;
+            transition: 0.12s;
+            flex-shrink: 0;
+        }
+
+        .sv-view-add:hover {
+            background: rgba(0,0,0,0.04);
+            color: var(--text-soft);
+        }
+
+        .dark .sv-view-add:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sv-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .sv-toolbar-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-faint);
+            background: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: color 0.12s, background 0.12s;
+            white-space: nowrap;
+        }
+
+        .sv-toolbar-btn:hover {
+            color: var(--text-soft);
+            background: rgba(0,0,0,0.04);
+        }
+
+        .dark .sv-toolbar-btn:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sv-toolbar-btn svg {
+            flex-shrink: 0;
+        }
+
+        .sv-toolbar-btn.has-filter {
+            color: var(--primary);
+        }
+
+        .sv-toolbar-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--line);
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+
+        /* Icon-only toolbar button (no label) */
+        .sv-toolbar-btn.icon-only {
+            padding: 5px;
+        }
+
+        .sv-toolbar-btn.icon-only svg {
+            width: 16px;
+            height: 16px;
         }
 
     </style>
@@ -2776,6 +2982,74 @@
             return new Date().toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
         }
 
+        function getTableHeaderHTML() {
+            return `<tr>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M4 12h10"/><path d="M4 17h6"/></svg>SPZ</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1" fill="currentColor"/></svg>Značka</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M4 12h10"/><path d="M4 17h6"/></svg>Model</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3h14"/><path d="M12 3v18"/></svg>Rok</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Stav STK</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Přiděleno</div></th>
+                <th><div class="sv-th-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Lokace</div></th>
+                <th style="width:48px;"><div style="display:flex;gap:2px;"><button class="sv-col-btn" title="Přidat sloupec"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button><button class="sv-col-btn" title="Více"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button></div></th>
+            </tr>`;
+        }
+
+        function getToolbarActionsHTML() {
+            return `
+                <div class="sv-toolbar-actions">
+                    <button class="sv-toolbar-btn icon-only" title="Filtrovat">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+                    </button>
+                    <button class="sv-toolbar-btn icon-only" title="Řadit">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 5h10"/><path d="M11 9h7"/><path d="M11 13h4"/><path d="M3 17l3 3 3-3"/><path d="M6 18V4"/></svg>
+                    </button>
+                    <button class="sv-toolbar-btn icon-only" title="Seskupit">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6h4"/><path d="M2 12h4"/><path d="M2 18h4"/><rect x="8" y="4" width="14" height="4" rx="1"/><rect x="8" y="10" width="14" height="4" rx="1"/><rect x="8" y="16" width="14" height="4" rx="1"/></svg>
+                    </button>
+                    <button class="sv-toolbar-btn icon-only" title="Skrýt pole">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <div class="sv-toolbar-divider"></div>
+                    <button class="sv-toolbar-btn icon-only" title="Hledat v tabulce">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                    </button>
+                    <button class="sv-toolbar-btn icon-only" title="Další možnosti">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                    </button>
+                </div>
+            `;
+        }
+
+        function getToolbarHTML() {
+            return `
+                <div class="sv-data-toolbar">
+                    <div class="sv-view-tabs">
+                        <div class="sv-view-tab active" data-view="table">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+                            Přehled
+                        </div>
+                        <div class="sv-view-tab" data-view="table2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+                            Expirace do 30 dnů
+                        </div>
+                        <div class="sv-view-tab" data-view="table3">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+                            Dle lokace
+                        </div>
+                        <div class="sv-view-tab" data-view="kanban">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="5" height="14" rx="1"/><rect x="10" y="3" width="5" height="10" rx="1"/><rect x="17" y="3" width="5" height="18" rx="1"/></svg>
+                            Dle stavu STK
+                        </div>
+                        <div class="sv-view-add" title="Přidat pohled">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </div>
+                    </div>
+                    ${getToolbarActionsHTML()}
+                </div>
+            `;
+        }
+
         function createSplitView(userMessage) {
             const el = document.createElement('div');
             el.className = 'split-view';
@@ -2823,25 +3097,16 @@
                 <div class="sv-data">
                     <div class="sv-data-header">
                         <div class="sv-breadcrumb">
-                            <span>Studio</span>
+                            <span class="sv-breadcrumb-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Studio</span>
                             <span class="sv-breadcrumb-sep">›</span>
-                            <span class="sv-breadcrumb-current">Datová tabulka</span>
+                            <span class="sv-breadcrumb-current"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>Vozový park – přehled</span>
                         </div>
-                        <div class="sv-data-title">Vozový park – přehled</div>
-                        <div class="sv-data-subtitle">Základní evidence vozidel společnosti · 100 záznamů</div>
                     </div>
+                    ${getToolbarHTML()}
                     <div class="sv-data-body">
                         <table class="sv-table">
                             <thead>
-                                <tr>
-                                    <th>SPZ</th>
-                                    <th>Značka</th>
-                                    <th>Model</th>
-                                    <th>Rok</th>
-                                    <th>Stav STK</th>
-                                    <th>Přiděleno</th>
-                                    <th>Lokace</th>
-                                </tr>
+                                ${getTableHeaderHTML()}
                             </thead>
                             <tbody id="svTableBody"></tbody>
                         </table>
@@ -2863,6 +3128,7 @@
                     <td><span class="sv-status-badge ${v.stk}"><span class="sv-status-dot"></span>${v.stkLabel}</span></td>
                     <td>${v.person}</td>
                     <td>${v.loc}</td>
+                    <td></td>
                 </tr>
             `).join('');
         }
@@ -3043,25 +3309,16 @@
             el.innerHTML = `
                 <div class="sv-data-header">
                     <div class="sv-breadcrumb">
-                        <span>${escapeHTML(agendaName)}</span>
+                        <span class="sv-breadcrumb-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>${escapeHTML(agendaName)}</span>
                         <span class="sv-breadcrumb-sep">›</span>
-                        <span class="sv-breadcrumb-current">${escapeHTML(datasetName)}</span>
+                        <span class="sv-breadcrumb-current"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>${escapeHTML(datasetName)}</span>
                     </div>
-                    <div class="sv-data-title">${escapeHTML(datasetName)}</div>
-                    <div class="sv-data-subtitle">Základní evidence · ${vehicleData.length} záznamů</div>
                 </div>
+                ${getToolbarHTML()}
                 <div class="sv-data-body">
                     <table class="sv-table">
                         <thead>
-                            <tr>
-                                <th>SPZ</th>
-                                <th>Značka</th>
-                                <th>Model</th>
-                                <th>Rok</th>
-                                <th>Stav STK</th>
-                                <th>Přiděleno</th>
-                                <th>Lokace</th>
-                            </tr>
+                            ${getTableHeaderHTML()}
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -3077,6 +3334,7 @@
                     <td><span class="sv-status-badge ${v.stk}"><span class="sv-status-dot"></span>${v.stkLabel}</span></td>
                     <td>${v.person}</td>
                     <td>${v.loc}</td>
+                    <td></td>
                 </tr>
             `).join('');
             return el;
@@ -3141,6 +3399,7 @@
 
             // Extract the data content from data-view
             const dataHeader = dataView.querySelector('.sv-data-header');
+            const dataToolbar = dataView.querySelector('.sv-data-toolbar');
             const dataBody = dataView.querySelector('.sv-data-body');
 
             // Create split-view wrapper
@@ -3159,6 +3418,7 @@
             const dataPanel = document.createElement('div');
             dataPanel.className = 'sv-data';
             dataPanel.appendChild(dataHeader);
+            if (dataToolbar) dataPanel.appendChild(dataToolbar);
             dataPanel.appendChild(dataBody);
 
             // Narrower chat when opened alongside data
@@ -3237,6 +3497,16 @@
                     convertDataViewToSplit(name);
                 }
             }
+        });
+
+        // View tab switching via event delegation
+        document.addEventListener('click', (e) => {
+            const tab = e.target.closest('.sv-view-tab');
+            if (!tab) return;
+            const toolbar = tab.closest('.sv-data-toolbar');
+            if (!toolbar) return;
+            toolbar.querySelectorAll('.sv-view-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
         });
 
         // Wire child-item clicks via event delegation (works for sidebar + float)
